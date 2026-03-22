@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hick's Family Colorado Spring Break 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Oswald:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blood:#8B0000;--crimson:#C0392B;--gold:#C9A84C;--cream:#F5F0E8;
+  --dark:#0D0805;--darker:#080503;--paper:#EDE8DF;--faded:#7a6a55;
+  --room237:#3D0000;--shadow:rgba(0,0,0,.5);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--darker);color:var(--cream);font-family:'Courier Prime',monospace;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:repeating-linear-gradient(60deg,transparent,transparent 10px,rgba(139,0,0,.04) 10px,rgba(139,0,0,.04) 20px),repeating-linear-gradient(-60deg,transparent,transparent 10px,rgba(139,0,0,.04) 10px,rgba(139,0,0,.04) 20px);pointer-events:none;z-index:0}
+body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at center,transparent 40%,rgba(0,0,0,.8) 100%);pointer-events:none;z-index:0}
+::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:var(--darker)}::-webkit-scrollbar-thumb{background:var(--blood);border-radius:4px}
+.wrap{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:0 20px 60px}
+
+/* === HERO === */
+.hero{text-align:center;padding:50px 20px 30px;position:relative;overflow:visible}
+.hotel-tag{font-family:'Oswald',sans-serif;font-size:clamp(11px,2vw,14px);font-weight:300;letter-spacing:.5em;color:var(--gold);text-transform:uppercase;margin-bottom:12px;opacity:0;animation:fadeIn 1s .3s forwards}
+.main-title{font-family:'Special Elite',cursive;font-size:clamp(32px,7vw,72px);color:var(--blood);line-height:1.1;text-shadow:0 0 40px rgba(139,0,0,.6),0 0 80px rgba(139,0,0,.3);position:relative;display:inline-block;opacity:0;animation:flicker 3s .5s forwards}
+.subtitle{font-family:'Oswald',sans-serif;font-size:clamp(12px,2.5vw,16px);font-weight:300;letter-spacing:.3em;color:var(--faded);margin-top:14px;text-transform:uppercase;opacity:0;animation:fadeIn 1s .8s forwards}
+.dates-tag{font-family:'Courier Prime',monospace;font-size:14px;color:var(--gold);margin-top:10px;opacity:0;animation:fadeIn 1s 1s forwards}
+
+/* Paint drips from specific letters */
+.main-title{position:relative;z-index:1;padding-bottom:0;margin-bottom:0}
+.drip-anchor{position:absolute;width:0;height:0;pointer-events:none;z-index:0;overflow:visible}
+.drip-stream{position:absolute;top:0;left:-3px;width:7px;background:linear-gradient(to bottom,#8B0000 0%,rgba(139,0,0,.5) 60%,rgba(100,0,0,.05) 100%);border-radius:0 0 50% 50%;height:0;opacity:0}
+
+/* === SECTIONS === */
+.section-div{text-align:center;margin:40px 0 20px;position:relative}
+.section-div::before,.section-div::after{content:'';position:absolute;top:50%;height:1px;width:calc(50% - 100px);background:linear-gradient(to right,transparent,var(--blood))}
+.section-div::before{left:0}
+.section-div::after{right:0;background:linear-gradient(to left,transparent,var(--blood))}
+.section-title{font-family:'Special Elite',cursive;font-size:20px;color:var(--blood);padding:0 16px;background:var(--darker);position:relative}
+
+/* === DAY CARDS === */
+.day{background:rgba(13,8,5,.9);border:1px solid rgba(139,0,0,.3);border-radius:8px;margin-bottom:24px;overflow:hidden;animation:fadeUp .6s ease both}
+.day-head{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;cursor:pointer;background:linear-gradient(135deg,rgba(139,0,0,.15),transparent);border-bottom:1px solid rgba(139,0,0,.2);transition:background .3s}
+.day-head:hover{background:linear-gradient(135deg,rgba(139,0,0,.25),transparent)}
+.day-date{font-family:'Special Elite',cursive;font-size:22px;color:var(--crimson)}
+.day-label{font-family:'Oswald',sans-serif;font-size:13px;font-weight:300;letter-spacing:.2em;color:var(--faded);text-transform:uppercase}
+.day-arrow{color:var(--blood);font-size:18px;transition:transform .3s}
+.day.open .day-arrow{transform:rotate(180deg)}
+.day-body{display:none;padding:20px}
+.day.open .day-body{display:block}
+
+/* === ACTIVITY ITEMS === */
+.act{display:flex;gap:14px;padding:12px;border-radius:6px;margin-bottom:10px;cursor:pointer;transition:all .3s;border:1px solid transparent}
+.act:hover{border-color:rgba(139,0,0,.3);background:rgba(139,0,0,.05)}
+.act.confirmed{background:rgba(139,0,0,.08);border-left:3px solid var(--blood);cursor:default}
+.act.selected{background:rgba(201,168,76,.08);border-color:rgba(201,168,76,.3)}
+.act-cb{width:22px;height:22px;border:2px solid var(--blood);border-radius:4px;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--gold);transition:all .2s}
+.act.confirmed .act-cb,.act.selected .act-cb{background:var(--blood);color:var(--cream)}
+.act-time{font-size:12px;color:var(--gold);font-weight:700;margin-bottom:2px}
+.act-name{font-family:'Oswald',sans-serif;font-size:16px;font-weight:400;color:var(--cream);margin-bottom:4px}
+.act-desc{font-size:13px;color:var(--faded);line-height:1.5}
+.act-desc a{color:var(--gold);text-decoration:none;border-bottom:1px dotted var(--gold)}
+.act-desc a:hover{color:var(--crimson)}
+
+/* Badges */
+.badge{display:inline-block;font-size:10px;padding:2px 8px;border-radius:3px;font-family:'Oswald',sans-serif;letter-spacing:.1em;text-transform:uppercase;vertical-align:middle;margin-left:6px}
+.b-conf{background:var(--blood);color:var(--cream)}
+.b-book{background:var(--gold);color:var(--dark)}
+.b-free{background:rgba(76,175,80,.2);color:#81c784;border:1px solid rgba(76,175,80,.3)}
+.b-kids{background:rgba(100,181,246,.15);color:#90caf9;border:1px solid rgba(100,181,246,.3)}
+.b-drive{background:rgba(255,152,0,.15);color:#ffb74d;border:1px solid rgba(255,152,0,.3)}
+.b-photo{background:rgba(186,104,200,.15);color:#ce93d8;border:1px solid rgba(186,104,200,.3)}
+
+/* === MEALS === */
+.meals-title{font-family:'Special Elite',cursive;font-size:16px;color:var(--crimson);margin:18px 0 10px;padding-left:4px}
+.meals-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
+.meal{background:rgba(245,240,232,.04);border:1px solid rgba(139,0,0,.2);border-radius:6px;padding:12px;cursor:pointer;transition:all .3s}
+.meal:hover{border-color:var(--crimson);background:rgba(139,0,0,.06)}
+.meal.selected{border-color:var(--gold);background:rgba(201,168,76,.06)}
+.meal-type{font-size:11px;color:var(--gold);text-transform:uppercase;letter-spacing:.15em;font-family:'Oswald',sans-serif;margin-bottom:4px}
+.meal-name{font-family:'Oswald',sans-serif;font-size:15px;color:var(--cream);margin-bottom:4px}
+.meal-info{font-size:12px;color:var(--faded);line-height:1.5}
+.meal-info a{color:var(--gold);text-decoration:none}
+
+/* === DIRECTIONS === */
+.dir-card{background:rgba(13,8,5,.8);border:1px solid rgba(139,0,0,.2);border-radius:6px;margin-bottom:10px;overflow:hidden}
+.dir-head{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;cursor:pointer;transition:background .3s}
+.dir-head:hover{background:rgba(139,0,0,.1)}
+.dir-label{font-family:'Oswald',sans-serif;font-size:14px;color:var(--cream)}
+.dir-arrow{color:var(--blood);transition:transform .3s;font-size:14px}
+.dir-card.open .dir-arrow{transform:rotate(180deg)}
+.dir-body{display:none;padding:12px 16px;font-size:13px;color:var(--faded);line-height:1.6;border-top:1px solid rgba(139,0,0,.15)}
+.dir-card.open .dir-body{display:block}
+.dir-body a{display:inline-block;margin-top:8px;background:var(--blood);color:var(--cream);padding:6px 14px;border-radius:4px;text-decoration:none;font-size:12px;font-family:'Oswald',sans-serif;letter-spacing:.1em}
+
+/* === WARNING BOX === */
+.warn{display:flex;gap:12px;padding:14px 16px;background:rgba(139,0,0,.1);border:1px solid rgba(139,0,0,.4);border-radius:6px;margin:14px 0}
+.warn-icon{font-size:20px;flex-shrink:0}
+.warn-text{font-size:13px;color:var(--cream);line-height:1.5}
+.warn-text strong{color:var(--crimson)}
+
+/* === DISCOUNT BOX === */
+.discount{text-align:center;padding:16px;background:linear-gradient(135deg,rgba(201,168,76,.1),rgba(139,0,0,.1));border:1px solid var(--gold);border-radius:6px;margin:14px 0}
+.discount-code{font-family:'Special Elite',cursive;font-size:28px;color:var(--gold);letter-spacing:.1em}
+.discount-desc{font-size:13px;color:var(--faded);margin-top:4px}
+
+/* === LOGISTICS GRID === */
+.log-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:14px}
+.log-card{background:rgba(245,240,232,.03);border:1px solid rgba(139,0,0,.2);border-radius:6px;padding:14px;text-align:center}
+.log-icon{font-size:24px;margin-bottom:6px}
+.log-label{font-family:'Oswald',sans-serif;font-size:12px;color:var(--faded);text-transform:uppercase;letter-spacing:.15em}
+.log-val{font-size:14px;color:var(--cream);margin-top:2px}
+.log-extra{font-size:11px;color:var(--gold);margin-top:4px}
+
+/* === PLAN PANEL === */
+.plan-btn{position:fixed;bottom:20px;right:20px;background:var(--blood);color:var(--cream);border:none;width:56px;height:56px;border-radius:50%;font-size:24px;cursor:pointer;box-shadow:0 4px 20px rgba(139,0,0,.5);z-index:100;display:flex;align-items:center;justify-content:center;transition:transform .2s}
+.plan-btn:hover{transform:scale(1.1)}
+.plan-count{position:absolute;top:-4px;right:-4px;background:var(--gold);color:var(--dark);font-size:11px;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Oswald',sans-serif;font-weight:700}
+.plan-panel{position:fixed;top:0;right:-360px;width:340px;height:100vh;background:var(--dark);border-left:2px solid var(--blood);z-index:200;transition:right .3s;overflow-y:auto;padding:20px}
+.plan-panel.open{right:0}
+.plan-panel-close{position:absolute;top:12px;right:12px;background:none;border:none;color:var(--crimson);font-size:20px;cursor:pointer}
+.plan-panel h3{font-family:'Special Elite',cursive;font-size:20px;color:var(--crimson);margin-bottom:16px}
+.plan-item{font-size:13px;color:var(--cream);padding:8px 0;border-bottom:1px solid rgba(139,0,0,.15)}
+.plan-item-day{font-size:10px;color:var(--gold);font-family:'Oswald',sans-serif;letter-spacing:.1em;text-transform:uppercase}
+.plan-empty{font-size:13px;color:var(--faded);font-style:italic}
+
+/* === ANIMATIONS === */
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes flicker{0%{opacity:0}10%{opacity:.9}12%{opacity:.4}14%{opacity:.9}50%{opacity:1}52%{opacity:.7}54%{opacity:1}100%{opacity:1}}
+
+/* Stagger day cards */
+.day:nth-child(1){animation-delay:.1s}.day:nth-child(2){animation-delay:.2s}.day:nth-child(3){animation-delay:.3s}.day:nth-child(4){animation-delay:.4s}.day:nth-child(5){animation-delay:.5s}.day:nth-child(6){animation-delay:.6s}.day:nth-child(7){animation-delay:.7s}.day:nth-child(8){animation-delay:.8s}
+
+/* Mobile */
+@media(max-width:600px){
+  .wrap{padding:0 12px 60px}
+  .day-body{padding:14px}
+  .meals-grid{grid-template-columns:1fr}
+  .log-grid{grid-template-columns:1fr 1fr}
+  .plan-panel{width:100%;right:-100%}
+}
+@media print{.plan-btn,.plan-panel{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ===== HERO ===== -->
+<div class="hero">
+  <div class="hotel-tag">The Stanley Hotel · Estes Park, Colorado</div>
+  <div class="main-title" id="mainTitle">Hick's Family<br><span id="line2"><span data-drip>C</span><span>o</span><span data-drip>l</span><span>o</span><span data-drip>r</span><span>a</span><span data-drip>d</span><span>o</span><span> </span><span data-drip>S</span><span>p</span><span data-drip>r</span><span>i</span><span>n</span><span data-drip>g</span><span> </span><span data-drip>B</span><span>r</span><span data-drip>e</span><span>a</span><span data-drip>k</span></span></div>
+  <div class="subtitle">March 23 – 29, 2026</div>
+  <div class="dates-tag">Thomas · August · Mabry</div>
+</div>
+
+<!-- ===== TRAVEL OVERVIEW ===== -->
+<div class="section-div"><span class="section-title">Trip Overview</span></div>
+
+<div class="log-grid">
+  <div class="log-card">
+    <div class="log-icon">🚗</div>
+    <div class="log-label">Getting There</div>
+    <div class="log-val">Road Trip!</div>
+    <div class="log-extra">2-day drive via I-40 & I-70</div>
+  </div>
+  <div class="log-card">
+    <div class="log-icon">🏨</div>
+    <div class="log-label">Overnight Stop</div>
+    <div class="log-val">Hilton Garden Inn — Hays, KS</div>
+    <div class="log-extra">Mon Mar 23</div>
+  </div>
+  <div class="log-card">
+    <div class="log-icon">🏔️</div>
+    <div class="log-label">Destination</div>
+    <div class="log-val">The Stanley Hotel</div>
+    <div class="log-extra">2-Bedroom Condo 345 · Conf: 100774</div>
+  </div>
+  <div class="log-card">
+    <div class="log-icon">🎬</div>
+    <div class="log-label">The Shining Tour</div>
+    <div class="log-val">Thu Mar 26 · 10:30 AM</div>
+    <div class="log-extra">Conf: THSHNNGTR3020NFF01SL</div>
+  </div>
+  <div class="log-card">
+    <div class="log-icon">🏨</div>
+    <div class="log-label">Return Overnight</div>
+    <div class="log-val">Hilton Garden Inn — OKC Bricktown</div>
+    <div class="log-extra">Sat Mar 28</div>
+  </div>
+</div>
+
+<!-- ============================== -->
+<!-- DAY 1: MONDAY — DRIVE DAY 1   -->
+<!-- ============================== -->
+<div class="section-div"><span class="section-title">The Journey</span></div>
+
+<div class="day open" id="day-mon">
+  <div class="day-head" onclick="toggleDay('day-mon')">
+    <div><div class="day-date">Monday, March 23</div><div class="day-label">Drive Day 1 — Birmingham to Hays, Kansas</div></div>
+    <div class="day-arrow">▼</div>
+  </div>
+  <div class="day-body">
+
+    <div class="warn">
+      <span class="warn-icon">🌅</span>
+      <div class="warn-text"><strong>Early start — 4:00 AM CT departure from Vestavia Hills!</strong> ~14 hours of driving today. Coffee up. Weather looks clear the entire route: 70s through Arkansas & Oklahoma, 60s in Kansas. No storms expected.</div>
+    </div>
+
+    <div class="act confirmed">
+      <div class="act-cb">✓</div>
+      <div class="act-info">
+        <div class="act-time">4:00 AM CT</div>
+        <div class="act-name">🚗 Depart Vestavia Hills, Alabama <span class="badge b-drive">Road Trip</span></div>
+        <div class="act-desc">Hit the road! Take I-22 W / US-78 W toward Memphis, then I-40 W through Arkansas and Oklahoma.</div>
+      </div>
+    </div>
+
+    <div class="act" onclick="toggleAct(this)" data-day="Mon Mar 23" data-name="Breakfast stop in Memphis area">
+      <div class="act-cb"></div>
+      <div class="act-info">
+        <div class="act-time">~7:30 AM CT</div>
+        <div class="act-name">🍳 Breakfast / Gas Stop — Memphis Area</div>
+        <div class="act-desc">You'll be approaching Memphis after ~3.5 hours. Good time for fuel, coffee, and a stretch. Plenty of fast options off I-40/I-22.</div>
+      </div>
+    </div>
+
+    <div class="act" onclick="toggleAct(this)" data-day="Mon Mar 23" data-name="Lunch in OKC area">
+      <div class="act-cb"></div>
+      <div class="act-info">
+        <div class="act-time">~12:30 PM CT</div>
+        <div class="act-name">🥪 Lunch Stop — Oklahoma City Area</div>
+        <div class="act-desc">After ~8.5 hours you'll be rolling through OKC. Bricktown district is just off I-40 if you want a proper sit-down, or grab something quick and keep pushing north on I-35.</div>
+      </div>
+    </div>
+
+    <div class="act" onclick="toggleAct(this)" data-day="Mon Mar 23" data-name="POPS 66 Soda Ranch">
+      <div class="act-cb"></div>
+      <div class="act-info">
+        <div class="act-time">Just East of OKC on Route 66</div>
+        <div class="act-name">🥤 POPS 66 Soda Ranch — Arcadia, OK <span class="badge b-kids">Kid Friendly</span> <span class="badge b-photo">Photo Op</span></div>
+        <div class="act-desc">Giant 66-foot neon soda bottle glowing roadside. Hundreds of bottled sodas lining the walls in every flavor imaginable. Mabry can pick out some wild flavors. Quick 15-minute stop. Right off the route if you pass through on I-44/Route 66 east of OKC.</div>
+      </div>
+    </div>
+
+    <div class="act confirmed">
+      <div class="act-cb">✓</div>
+      <div class="act-info">
+        <div class="act-time">~6:00–7:00 PM CT</div>
+        <div class="act-name">🏨 Arrive Hilton Garden Inn — Hays, Kansas <span class="badge b-conf">Booked</span></div>
+        <div class="act-desc">221 West 43rd Street, Hays, KS 67601. Just north of I-70. Indoor saline pool, fire pit & terrace, Garden Grille & Bar for dinner. Check in at 3:00 PM. <a href="https://www.hilton.com/en/hotels/hysiigi-hilton-garden-inn-hays/" target="_blank">→ Hilton Garden Inn Hays</a></div>
+      </div>
+    </div>
+
+    <div class="meals-title">Dinner in Hays</div>
+    <div class="meals-grid">
+      <div class="meal" onclick="toggleMeal(this)" data-day="Mon Mar 23" data-name="Garden Grille & Bar (Hilton)">
+        <div class="meal-type">🍽️ Dinner — At the Hotel</div>
+        <div class="meal-name">Garden Grille & Bar</div>
+        <div class="meal-info">Right in the Hilton Garden Inn. American fare, cocktails, and beer. The easiest call after 14 hours of driving.</div>
+      </div>
+      <div class="meal" onclick="toggleMeal(this)" data-day="Mon Mar 23" data-name="Gella's Diner & LB Brewing">
+        <div class="meal-type">🍽️ Dinner — Nearby</div>
+        <div class="meal-name">Gella's Diner & Lb. Brewing Co.</div>
+        <div class="meal-info">⭐ 4.6 · $$ · 117 E 11th St, Hays. Wood-fired pizzas, burgers, house-brewed beer. Local favorite! ~8 min drive from hotel. <a href="tel:+17856212739">785-621-2739</a> · <a href="https://www.google.com/maps/place/?q=place_id:ChIJw1Pzhn95oYcRsH90FK1mU4I" target="_blank">📍 Map</a></div>
+      </div>
+    </div>
+
+    <!-- Directions -->
+    <div style="margin-top:18px">
+      <div class="dir-card" id="dir-bhm-hays">
+        <div class="dir-head" onclick="toggleDir('dir-bhm-hays')">
+          <div class="dir-label">🗺️ Driving Directions: Vestavia Hills → Hays, KS</div>
+          <div class="dir-arrow">▼</div>
+        </div>
+        <div class="dir-body">
+          I-22 W / US-78 W to Memphis (~3.5 hrs)<br>
+          I-40 W through Little Rock, AR (~2 hrs)<br>
+          I-40 W through Oklahoma City, OK (~4 hrs)<br>
+          I-35 N to Wichita, KS (~2.5 hrs)<br>
+          I-135 N to I-70 W to Hays, KS (~2 hrs)<br>
+          <strong>Total: ~14 hours / ~950 miles</strong><br>
+          <em>⛽ Plan gas stops near Memphis, Little Rock, OKC, and Wichita</em>
+          <br><a href="https://www.google.com/maps/dir/Vestavia+Hills,+AL/Hilton+Garden+Inn+Hays,+West+43rd+Street,+Hays,+KS" target="_blank">Open in Google Maps</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================== -->
+<!-- DAY 2: TUESDAY — DRIVE DAY 2  -->
+<!-- ============================== -->
+<div class="day open" id="day-tue">
+  <div class="day-head" onclick="toggleDay('day-tue')">
+    <div><div class="day-date">Tuesday, March 24</div><div class="day-label">Drive Day 2 — Hays, Kansas to Estes Park</div></div>
+    <div class="day-arrow">▼</div>
+  </div>
+  <div class="day-body">
+
+    <div class="warn">
+      <span class="warn-icon">🏔️</span>
+      <div class="warn-text"><strong>~6 hours of driving today.</strong> Cruising I-70 W across Kansas into Colorado, then north to Estes Park. Weather: 70s in Kansas, low 80s in Denver, upper 50s at Estes Park. Dress in layers for arrival at 7,500 ft elevation. You gain 1 hour crossing into Mountain Time!</div>
+    </div>
+
+    <div class="act confirmed">
+      <div class="act-cb">✓</div>
+      <div class="act-info">
+        <div class="act-time">8:00 AM CT</div>
+        <div class="act-name">🍳 Breakfast & Check Out — Hilton Garden Inn</div>
+        <div class="act-desc">Fuel up at the hotel breakfast or Garden Grille, then hit I-70 West. Check out by 11 AM.</div>
+      </div>
+    </div>
+
+    <div class="act" onclick="toggleAct(this)" data-day="Tue Mar 24" data-name="World's Largest Van Gogh (from car)">
+      <div class="act-cb"></div>
+      <div class="act-info">
+        <div class="act-time">~10:30 AM CT — Goodland, KS</div>
+        <div class="act-name">🎨 World's Largest Easel & Van Gogh — Goodland, KS <span class="badge b-photo">Photo Op</span> <span class="badge b-free">Free</span></div>
+        <div class="act-desc">An 80-foot, 40,000-lb easel holding a giant reproduction of Van Gogh's "Three Sunflowers in a Vase." Visible from I-70 — wave from the car or pull over for a quick snap! About 1.5 hours west of Hays.</div>
+      </div>
+    </div>
+
+    <div class="act" onclick="toggleAct(this)" data-day="Tue Mar 24" data-name="Lunch stop in Denver area">
+      <div class="act-cb"></div>
+      <div class="act-info">
+        <div class="act-time">~12:00–1:00 PM MT</div>
+        <div class="act-name">🥪 Lunch Stop — Denver / Longmont Area</div>
+        <div class="act-desc">As you pass through the Denver metro or head north on I-25 / US-36, grab lunch. You're close to Estes — don't linger too long!</div>
+      </div>
+    </div>
+
+    <div class="act confirmed">
+      <div class="act-cb">✓</div>
+      <div class="act-info">
+        <div class="act-time">~3:00–4:00 PM MT</div>
+        <div class="act-name">🏔️ Arrive Estes Park! <span class="badge b-conf">The Stanley Hotel</span></div>
+        <div class="act-desc">Welcome to the mountains! The final stretch through Big Thompson Canyon on US-34 is stunning — watch for the river gorge views. Check-in at 4:00 PM at The Stanley. Late arrivals check in at Aspire Front Desk.<br><strong>2-Bedroom Condo 345 · Conf: 100774</strong></div>
+      </div>
+    </div>
+
+    <div class="meals-title">Dinner — First Night in Estes Park</div>
+    <div class="meals-grid">
+      <div class="meal" onclick="toggleMeal(this)" data-day="Tue Mar 24" data-name="Cascades Restaurant (Stanley)">
+        <div class="meal-type">🍽️ Dinner 5–7 PM</div>
+        <div class="meal-name">Cascades Restaurant — The Stanley Hotel</div>
+        <div class="meal-info">American fine dining right at your hotel. Great way to settle in without driving anywhere after a long road day. <a href="tel:+19705774001">970-577-4001</a> · <a href="https://www.stanleyhotel.com/cascades" target="_blank">🌐 Website</a> · <a href="https://www.google.com/maps/place/?q=place_id:ChIJL3e6rfNlaYcR_j8PonDqxlk" target="_blank">📍 Map</a></div>
+      </div>
+      <div class="meal" onclick="toggleMeal(this)" data-day="Tue Mar 24" data-name="Smokin' Dave's BBQ">
+        <div class="meal-type">🍽️ Dinner 5–7 PM</div>
+        <div class="meal-name">Smokin' Dave's BBQ & Brew</div>
+        <div class="meal-info">⭐ 4.6 · $ · 820 Moraine Ave. Brisket, ribs, craft beer. Casual, filling, kid-friendly. <a href="tel:+19705777427">970-577-7427</a> · <a href="https://estespark.smokindavesbbq.com/" target="_blank">🌐 Website</a> · <a href="https://www.google.com/maps/place/?q=place_id:ChIJAYDIJ75laYcRQuDlMop2Su8" target="_blank">📍 Map</a></div>
+      </div>
+      <div class="meal" onclick="toggleMeal(this)" data-day="Tue Mar 24" data-name="Nepal's Café">
+        <div class="meal-type">🍽️ Dinner 5–7 PM</div>
+        <div class="meal-name">Nepal's Café</div>
+        <div class="meal-info">⭐ 4.4 · $$ · 184 E Elkhorn Ave. Surprisingly great Nepali & Indian food. Momos, curry, naan. A unique first-night choice. <a href="tel:+19705777035">970-577-7035</a> · <a href="https://nepals-cafe.shop/" target="_blank">🌐 Website</a> · <a href="https://www.google.com/maps/place/?q=place_id:ChIJQ9rDdO1laYcRuwzDnYH0lZo" target="_blank">📍 Map</a></div>
+      </div>
+    </div>
+
+    <!-- Directions -->
+    <div style="margin-top:18px">
+      <div class="dir-card" id="dir-hays-estes">
+        <div class="dir-head" onclick="toggleDir('dir-hays-estes')">
+          <div class="dir-label">🗺️ Driving Directions: Hays, KS → Estes Park</div>
+          <div class="dir-arrow">▼</div>
+        </div>
+        <div class="dir-body">
+          I-70 W across Kansas into Colorado (~4 hrs to Denver area)<br>
+          I-270 N / US-36 W through Boulder & Lyons<br>
+          US-36 W to Estes Park (~1.5 hrs from Denver)<br>
+          OR: I-25 N to Loveland, then US-34 W through Big Thompson Canyon<br>
+          <strong>Total: ~5.5–6 hours / ~380 miles</strong><br>
+          <em>💡 Avoid E-470 toll road — take I-270 to US-36 instead (saves $$ and only 5 min longer)</em>
+          <br><a href="https://www.google.com/maps/dir/Hilton+Garden+Inn+Hays,+West+43rd+Street,+Hays,+KS/The+Stanley+Hotel,+Wonderview+Avenue,+Estes+Park,+CO" target="_blank">Open in Google Maps</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================== -->
+<!-- DAY 3: WEDNESDAY — ESTES PARK  -->
+<!-- ============================== -->
+<div class="section-div"><span class="section-title">Estes Park</span></div>
+
+<div class="day" id="day-wed">
+  <div class="day-head" onclick="toggleDay('day-wed')">
+    <div><div class="day-date">Wednesday, March 25</div><div class="day-label">Explore Estes Park & Rocky Mountain National Park</div></div>
+    <div class="day-arrow">▼</div>
+  </div>
+  <div class="day-body">
+
+    <div class="act" onclick="toggleAct(this)" data-day="Wed Mar 25" data-name="RMNP — Bear Lake & Sprague Lake">
+      <div class="act-cb"></div>
+      <div class="act-info">
+        <div class="act-time">9:00 AM – 1:00 PM</div>
+        <div class="act-name">🏔️ Rocky Mountain National Park — Bear Lake / Sprague Lake <span class="badge b-kids">Kid Friendly</span></div>
+        <div class="act-desc">Start with the Sprague Lake trail (easy, flat, under 1 mile) for stunning mountain reflections, then Bear Lake loop. Both are beautiful even in late March. Dress warm — trails may have snow/ice. <a href="https://www.nps.gov/romo/index.htm" target="_blank">→ RMNP official site</a></div>
+      </div>
+    </div>
+
+    <div class="act" onclick="toggleAct(this)" data-day="Wed Mar 25" data-name="Yellow Wood Guiding wildlife tour">
+      <div class="act-cb"></div>
+      <div class="act-info">
+        <div class="act-time">Afternoon option</div>
+        <div class="act-name">🦌 Yellow Wood Guiding — Wildlife / Photo Safari <span class="badge b-book">Book Required</span> <span class="badge b-kids">Kid Friendly</span></div>
+        <div class="act-desc">Naturalist-guided wildlife tour in RMNP or surrounding areas. Spot elk, bighorn sheep, moose. Great for Mabry! <a href="https://yellowwoodguiding.com/book-a-tour/" target="_blank">→ Book a tour</a> · <a href="mailto:info@yellowwoodguiding.com">Email to book</a></div>
+      </div>
+    </div>
+
+    <div class="act" onclick="toggleAct(this)" data-day="Wed Mar 25" data-name="Downtown Estes Park Riverwalk">
+      <div class="act-cb"></div>
+      <div class="act-info">
+        <div class="act-time">Afternoon</div>
+        <div class="act-name">🚶 Downtown Estes Park Riverwalk & Shops <span class="badge b-free">Free</span> <span class="badge b-kids">Kid Friendly</span></div>
+        <div class="act-desc">One-mile paved path along the Big Thompson & Fall Rivers through downtown. Shops, galleries, Rocky Mountain Chocolate Factory (caramel apples!), and souvenir browsing.</div>
+      </div>
+    </div>
+
+    <div class="act" onclick="toggleAct(this)" data-day="Wed Mar 25" data-name="Peak to Peak Scenic Byway">
+      <div class="act-cb"></div>
+      <div class="act-info">
+        <div class="act-time">Alternative afternoon drive</div>
+        <div class="act-name">🛣️ Peak to Peak Scenic Byway <span class="badge b-free">Free</span></div>
+        <div class="act-desc">Colorado's oldest scenic byway. Spectacular mountain views, aspen groves, historic mining towns. Route: Estes Park → Hwy 7 south → Hwy 72 → back via Hwy 36. ~2 hour loop. <a href="https://www.visitestespark.com/things-to-do/scenic-drives/" target="_blank">→ Byway guide</a></div>
+      </div>
+    </div>
+
+    <div class="meals-title">Dining — Choose Your Meals</div>
+    <div class="meals-grid">
+      <div class="meal" onclick="toggleMeal(this)" data-day="Wed Mar 25" data-name="Notchtop Bakery & Café">
+        <div class="meal-type">🍳 Breakfast 8–9 AM</div>
+        <div class="meal-name">Notchtop Bakery & Café</div>
+        <div class="meal-info">⭐ 4.6 · $$ · 459 E Wonderview Ave. Fresh pastries, breakfast burritos, excellent coffee. Open 7 AM. <a href="tel:+19705860272">970-586-0272</a> · <a href="https://thenotchtop.com/" target="_blank">🌐 Website</a> · <a href="https://www.google.com/maps/place/?q=place_id:ChIJvQGegPFlaYcRWPI_RNItVSc" target="_blank">📍 Map</a></div>
+      </div>
+      <div class="meal" onclick="toggleMeal(this)" data-day="Wed Mar 25" data-name="Bighorn Restaurant">
+        <div class="meal-type">🍳 Breakfast 8–9 AM</div>
+        <div class="meal-name">Bighorn Restaurant</div>
+        <div class="meal-info">⭐ 4.3 · $ · 401 W Elkhorn Ave. Classic diner. Huge portions, pancakes, omelets. Cash only! <a href="tel:+19705862792">970-586-2792</a> · <a href="https://www.google.com/maps/place/?q=place_id:ChIJyUv0DJJlaYcRSjFOr-nzkxg" target="_blank">📍 Map</a></div>
+      </div>
+      <div class="meal" onclick="toggleMeal(this)" data-day="Wed Mar 25" data-name="Poppy's Pizza & Grill">
+        <div class="meal-type">🥪 Lunch 11 AM – 12 PM</div>
+        <div class="meal-name">Poppy's Pizza & Grill</div>
+        <div class="meal-info">⭐ 4.1 · $$ · 342 E Elkhorn Ave. Great mountain pizza and salads. Kid favorite. Opens 11 AM. <a href="tel:+19705868282">970-586-8282</a> · <a href="https://www.poppyspizzaandgrill.com/" target="_blank">🌐 Website</a> · <a href="https://www.google.com/maps/place/?q=place_id:ChIJ6--yw-1laYcR07QXb-ggrNM" target="_blank">📍 Map</a></div>
+      </div>
+      <div class="meal" onclick="toggleMeal(this)" data-day="Wed Mar 25" data-name="Mama Rose's">
+        <div class="meal-type">🍽️ Dinner 5–7 PM</div>
+        <div class="meal-name">Mama Rose's</div>
+        <div class="meal-info">⭐ 4.0 · $$ · 338 E Elkhorn Ave. Italian comfort food. Pasta, calzones, family-style portions. Opens 4:30 PM. <a href="tel:+19705863330">970-586-3330</a> · <a href="https://www.google.com/maps/place/?q=place_id:ChIJrTs2wO1laYcRLeioBCIF_-M" target="_blank">📍 Map</a></div>
+      </div>
+      <div class="meal" onclick="toggleMeal(this)" data-day="Wed Mar 25" data-name="The Dunraven Inn">
+        <div class="meal-type">🍽️ Dinner 5–7 PM</div>
+        <div class="meal-name">The Dunraven Inn</div>
+        <div class="meal-info">⭐ 4.1 · $$ · 1700 Colorado Peaks Dr. Italian with mountain views at the Estes Park Resort. Local legend. <a href="tel:+19705866409">970-586-6409</a> · <a href="https://www.google.com/maps/place/?q=place_id:ChIJV8v2UxhlaYcRtjQsd8BXpAA" target="_blank">📍 Map</a></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================== -->
+<!-- DAY 4: THURSDAY — SHINING TOUR -->
+<!-- ============================== -->
+<div class="day" id="day-thu">
+  <div class="day-head" onclick="toggleDay('day-thu')">
+    <div><div class="day-date">Thursday, March 26</div><div class="day-label">The Shining Tour & Exploration</div></div>
+    <div class="day-arrow">▼</div>
+  </div>
+  <div class="day-body">
+
+    <div class="act confirmed">
+      <div class="act-cb">✓</div>
+      <div class="act-info">
+        <div class="act-time">10:30 AM</div>
+        <div class="act-name">🪓 The Shining Tour — The Stanley Hotel <span class="badge b-conf">Confirmed</span></div>
+        <div class="act-desc">The reason we're here! Explore the real hotel that inspired Stephen King's masterpiece. Room 217, the concert hall, the tunnels below. Arrive 15 min early.<br><strong>Conf: THSHNNGTR3020NFF01SL</strong></div>
+      </div>
+    </div>
+
+    <div class="act" onclick="toggleAct(this)" data-day="Thu Mar 26" data-name="Stanley Hotel grounds exploration">
+      <div class="act-cb"></div>
+      <div class="act-info">
+        <div class="act-time">After the tour</div>
+        <div class="act-name">🏨 Explore The Stanley Grounds <span class="badge b-free">Free</span></div>
+        <div class="act-desc">Wander the lobby, grand staircase, hedge maze, and gardens. Check out the LEGO replica of the hotel on the garden level. Grab pastries at Colorado Cherry Company downstairs.</div>
+      </div>
+    </div>
+
+    <div class="act" onclick="toggleAct(this)" data-day="Thu Mar 26" data-name="Estes Park Aerial Tramway area">
+      <div class="act-cb"></div>
+      <div class="act-info">
+        <div class="act-time">Afternoon</div>
+        <div class="act-name">🎣 Trout Haven Fishing Pond <span class="badge b-kids">Kid Friendly</span></div>
+        <div class="act-desc">Rent poles, buy bait, and fish! Staff will clean, pack, and freeze your catch to take home. Great intro to fishing for Mabry. Located on Moraine Ave.</div>
+      </div>
+    </div>
+
+    <div class="act" onclick="toggleAct(this)" data-day="Thu Mar 26" data-name="Open Air Adventure Park">
+      <div class="act-cb"></div>
+      <div class="act-info">
+        <div class="act-time">Afternoon</div>
+        <div class="act-name">🧗 Open Air Adventure Park <span class="badge b-kids">Kid Friendly</span> <span class="badge b-book">Check Availability</span></div>
+        <div class="act-desc">Aerial ropes course, ziplines, and ax throwing. Kids 5+ can participate. 32 unique challenges through the treetops. Check if open in late March.</div>
+      </div>
+    </div>
+
+    <div class="meals-title">Dining — Choose Your Meals</div>
+    <div class="meals-grid">
+      <div class="meal" onclick="toggleMeal(this)" data-day="Thu Mar 26" data-name="Egg of Estes">
+        <div class="meal-type">🍳 Breakfast 8–9 AM</div>
+        <div class="meal-name">Egg of Estes</div>
+        <div class="meal-info">⭐ 4.6 · $$ · 393 E Elkhorn Ave. Creative egg dishes, French toast, bennies. Opens 7 AM. <a href="tel:+19705861173">970-586-1173</a> · <a href="https://www.google.com/maps/place/?q=place_id:ChIJ39gNlwBlaYcRhUJA8oqcQdo" target="_blank">📍 Map</a></div>
+      </div>
+      <div class="meal" onclick="toggleMeal(this)" data-day="Thu Mar 26" data-name="Coffee on the Rocks">
+        <div class="meal-type">🍳 Breakfast — Quick</div>
+        <div class="meal-name">Coffee on the Rocks</div>
+        <div class="meal-info">⭐ 4.6 · $ · 510 Moraine Ave. Bagels, lattes, river views. Quick & easy. <a href="tel:+19709094836">970-909-4836</a> · <a href="https://www.google.com/maps/place/?q=place_id:ChIJmyygL5RlaYcRLfPBner_Ckk" target="_blank">📍 Map</a></div>
+      </div>
+      <div class="meal" onclick="toggleMeal(this)" data-day="Thu Mar 26" data-name="The Post Mountain House">
+        <div class="meal-type">🥪 Lunch 11 AM – 12 PM</div>
+        <div class="meal-name">The Post Mountain House</div>
+        <div class="meal-info">⭐ 4.3 · $$ · 333 E Wonderview Ave (below The Stanley). Bison chili, mushroom burger, craft beer. <a href="tel:+19702875001">970-287-5001</a> · <a href="https://www.google.com/maps/place/?q=place_id:ChIJW7qqtyhlaYcRQLGJqIleJ0U" target="_blank">📍 Map</a></div>
+      </div>
+      <div class="meal" onclick="toggleMeal(this)" data-day="Thu Mar 26" data-name="Bird & Jim">
+        <div class="meal-type">🍽️ Dinner 5–7 PM</div>
+        <div class="meal-name">Bird & Jim</div>
+        <div class="meal-info">⭐ 4.5 · $$$ · 915 Moraine Ave. Farm-to-table. Elk sliders, trout, seasonal menus. One of Estes' best. <a href="tel:+19705869832">970-586-9832</a> · <a href="https://www.birdandjim.com/" target="_blank">🌐 Website</a> · <a href="https://www.google.com/maps/place/?q=place_id:ChIJh1eicwBlaYcRneOuENzp_lU" target="_blank">📍 Map</a></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================== -->
+<!-- DAY 5: FRIDAY — FDGD PREVIEW   -->
+<!-- ============================== -->
+<div class="day" id="day-fri">
+  <div class="day-head" onclick="toggleDay('day-fri')">
+    <div><div class="day-date">Friday, March 27</div><div class="day-label">Frozen Dead Guy Days Weekend Begins!</div></div>
+    <div class="day-arrow">▼</div>
+  </div>
+  <div class="day-body">
+
+    <div class="act" onclick="toggleAct(this)" data-day="Fri Mar 27" data-name="FDGD Frozen Dead Bar Crawl">
+      <div class="act-cb"></div>
+      <div class="act-info">
+        <div class="act-time">Afternoon / Evening</div>
+        <div class="act-name">🍺 Frozen Dead Bar Crawl <span class="badge b-book">Tickets Required</span></div>
+        <div class="act-desc">Themed bar crawl through Estes Park. Shuttles between stops. Costumes, themed drinks, wild energy. <a href="https://frozendeadguydays.com/frozen-dead-bar-crawl/" target="_blank">→ Bar crawl details</a></div>
+      </div>
+    </div>
+
+    <div class="act" onclick="toggleAct(this)" data-day="Fri Mar 27" data-name="Royal Blue Ball at The Stanley">
+      <div class="act-cb"></div>
+      <div class="act-info">
+        <div class="act-time">8:00 – 11:00 PM</div>
+        <div class="act-name">💙 Royal Blue Ball — The Stanley Concert Hall <span class="badge b-book">Tickets Required</span></div>
+        <div class="act-desc">The official FDGD kick-off party — right at your hotel! Blue-themed costumes, DJ, costume contest at 10 PM. <a href="https://stanleyhotel.ticketspice.com/2026-frozen-dead-guy-days-royal-blue-ball" target="_blank">→ Buy Royal Blue Ball tickets</a></div>
+      </div>
+    </div>
+
+    <div class="meals-title">Dining — Choose Your Meals</div>
+    <div class="meals-grid">
+      <div class="meal" onclick="toggleMeal(this)" data-day="Fri Mar 27" data-name="Mountain Home Café">
+        <div class="meal-type">🍳 Breakfast 8–9 AM</div>
+        <div class="meal-name">Mountain Home Café</div>
+        <div class="meal-info">⭐ 4.5 · $$ · 457 E Wonderview Ave. Chilaquiles, banana pancakes, fast service. <a href="tel:+19705866624">970-586-6624</a> · <a href="https://www.google.com/maps/place/?q=place_id:ChIJY0j3KvJlaYcRon-Mr14L0aM" target="_blank">📍 Map</a></div>
+      </div>
+      <div class="meal" onclick="toggleMeal(this)" data-day="Fri Mar 27" data-name="Rock Inn Mountain Tavern">
+        <div class="meal-type">🍽️ Dinner 5–7 PM</div>
+        <div class="meal-name">Rock Inn Mountain Tavern</div>
+        <div class="meal-info">⭐ 4.6 · $$ · 1675 CO-66. Rustic mountain pub. Burgers, steaks, live music some nights. <a href="tel:+19705864116">970-586-4116</a> · <a href="https://www.google.com/maps/place/?q=place_id:ChIJU7aEmgxlaYcRWfFLIkmoYz4" target="_blank">📍 Map</a></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================== -->
+<!-- DAY 6: SATURDAY — CHECKOUT & DRIVE TO OKC -->
+<!-- ============================== -->
+<div class="section-div"><span class="section-title">The Journey Home</span></div>
+
+<div class="day" id="day-sat">
+  <div class="day-head" onclick="toggleDay('day-sat')">
+    <div><div class="day-date">Saturday, March 28</div><div class="day-label">Drive Day — Estes Park to Oklahoma City</div></div>
+    <div class="day-arrow">▼</div>
+  </div>
+  <div class="day-body">
+
+    <div class="warn">
+      <span class="warn-icon">💡</span>
+      <div class="warn-text"><strong>Good news — you're not missing the main FDGD festival!</strong> The coffin races, music, and main events don't start until noon. By leaving at 9 AM, you beat the crowds and get an even 10-hour drive to OKC. You enjoyed the full Friday night (Royal Blue Ball, Bar Crawl) — that's the real FDGD experience!</div>
+    </div>
+
+    <div class="act confirmed">
+      <div class="act-cb">✓</div>
+      <div class="act-info">
+        <div class="act-time">7:30 AM MT</div>
+        <div class="act-name">🍳 Breakfast & Pack Up</div>
+        <div class="act-desc">Quick breakfast, load the car, say goodbye to The Stanley. Check out is 11 AM but no need to wait — hit the road early!</div>
+      </div>
+    </div>
+
+    <div class="act confirmed">
+      <div class="act-cb">✓</div>
+      <div class="act-info">
+        <div class="act-time">9:00 AM MT (10:00 AM CT)</div>
+        <div class="act-name">🚗 Depart Estes Park <span class="badge b-drive">Road Trip</span></div>
+        <div class="act-desc">Head east on US-36 or US-34 through Big Thompson Canyon → I-25 S → I-70 E across Kansas → I-35 S to Oklahoma City. ~10 hours of driving. You gain 1 hour crossing into Central Time.</div>
+      </div>
+    </div>
+
+    <div class="act" onclick="toggleAct(this)" data-day="Sat Mar 28" data-name="Lunch stop in Kansas">
+      <div class="act-cb"></div>
+      <div class="act-info">
+        <div class="act-time">~1:00 PM CT</div>
+        <div class="act-name">🥪 Lunch Stop — Western Kansas</div>
+        <div class="act-desc">You'll be rolling through Hays or Salina area by lunchtime. Familiar territory from the drive out! Grab something quick off I-70.</div>
+      </div>
+    </div>
+
+    <div class="act confirmed">
+      <div class="act-cb">✓</div>
+      <div class="act-info">
+        <div class="act-time">~7:00–7:30 PM CT</div>
+        <div class="act-name">🏨 Arrive Hilton Garden Inn OKC Bricktown <span class="badge b-conf">Booked</span></div>
+        <div class="act-desc">328 E Sheridan Ave, Oklahoma City, OK 73104. Right in the Bricktown Entertainment District! Indoor pool, Garden Grille & Bar, 40+ restaurants within walking distance along the Bricktown Canal. The Comets have a home game at 6:05 PM next door — fans will already be seated by the time you arrive. <a href="https://www.hilton.com/en/hotels/okcsagi-hilton-garden-inn-oklahoma-city-bricktown/" target="_blank">→ Hilton Garden Inn OKC Bricktown</a></div>
+      </div>
+    </div>
+
+    <div class="meals-title">Dinner in Bricktown</div>
+    <div class="meals-grid">
+      <div class="meal" onclick="toggleMeal(this)" data-day="Sat Mar 28" data-name="Garden Grille (Hilton OKC)">
+        <div class="meal-type">🍽️ Dinner — At the Hotel</div>
+        <div class="meal-name">Garden Grille & Bar</div>
+        <div class="meal-info">Right in the Hilton. American fare, cocktails. Easy if you're beat from driving.</div>
+      </div>
+      <div class="meal" onclick="toggleMeal(this)" data-day="Sat Mar 28" data-name="Bricktown Canal restaurants">
+        <div class="meal-type">🍽️ Dinner — Walk the Canal</div>
+        <div class="meal-name">Bricktown Canal District</div>
+        <div class="meal-info">40+ restaurants within walking distance! Steakhouses, Tex-Mex, Italian, BBQ — stroll along the canal and pick what looks good. Great way to stretch your legs after the drive.</div>
+      </div>
+    </div>
+
+    <!-- Directions -->
+    <div style="margin-top:18px">
+      <div class="dir-card" id="dir-estes-okc">
+        <div class="dir-head" onclick="toggleDir('dir-estes-okc')">
+          <div class="dir-label">🗺️ Driving Directions: Estes Park → Oklahoma City</div>
+          <div class="dir-arrow">▼</div>
+        </div>
+        <div class="dir-body">
+          US-36 E or US-34 E to I-25 S through Denver (~1.5 hrs)<br>
+          I-70 E across Kansas through Hays, Salina (~5.5 hrs)<br>
+          I-35 S through Wichita to Oklahoma City (~3 hrs)<br>
+          <strong>Total: ~10 hours / ~680 miles</strong><br>
+          <em>⛽ Gas stops near Denver, Hays, and Wichita</em><br>
+          <em>💡 Avoid E-470 toll — take I-270 to I-70 instead</em>
+          <br><a href="https://www.google.com/maps/dir/The+Stanley+Hotel,+Wonderview+Avenue,+Estes+Park,+CO/Hilton+Garden+Inn+Oklahoma+City+Bricktown,+East+Sheridan+Avenue,+Oklahoma+City,+OK" target="_blank">Open in Google Maps</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================== -->
+<!-- DAY 7: SUNDAY — DRIVE HOME     -->
+<!-- ============================== -->
+<div class="day" id="day-sun">
+  <div class="day-head" onclick="toggleDay('day-sun')">
+    <div><div class="day-date">Sunday, March 29</div><div class="day-label">Drive Day — Oklahoma City to Home</div></div>
+    <div class="day-arrow">▼</div>
+  </div>
+  <div class="day-body">
+
+    <div class="warn">
+      <span class="warn-icon">🏠</span>
+      <div class="warn-text"><strong>Last leg — 10 hours and you're home!</strong> I-40 east all the way through Arkansas and Memphis, then I-22 east to Birmingham. Straightforward interstate driving. You'll be sleeping in your own bed tonight!</div>
+    </div>
+
+    <div class="act confirmed">
+      <div class="act-cb">✓</div>
+      <div class="act-info">
+        <div class="act-time">7:00 AM CT</div>
+        <div class="act-name">🍳 Breakfast & Check Out — Hilton Garden Inn OKC Bricktown</div>
+        <div class="act-desc">Fuel up at the Garden Grille or grab something quick. Check out and hit I-40 East.</div>
+      </div>
+    </div>
+
+    <div class="act confirmed">
+      <div class="act-cb">✓</div>
+      <div class="act-info">
+        <div class="act-time">7:30 AM CT</div>
+        <div class="act-name">🚗 Depart Oklahoma City <span class="badge b-drive">Road Trip</span></div>
+        <div class="act-desc">I-40 E all the way through Little Rock and Memphis, then I-22 E / US-78 E home to Vestavia Hills. ~10 hours of driving.</div>
+      </div>
+    </div>
+
+    <div class="act" onclick="toggleAct(this)" data-day="Sun Mar 29" data-name="Lunch in Little Rock or Memphis">
+      <div class="act-cb"></div>
+      <div class="act-info">
+        <div class="act-time">~12:00–1:00 PM CT</div>
+        <div class="act-name">🥪 Lunch Stop — Little Rock or Memphis Area</div>
+        <div class="act-desc">Little Rock is ~5 hours from OKC, Memphis is ~7 hours. Both have plenty of quick options right off I-40. Memphis BBQ for the road? Central BBQ or Corky's are right off the interstate.</div>
+      </div>
+    </div>
+
+    <div class="act confirmed">
+      <div class="act-cb">✓</div>
+      <div class="act-info">
+        <div class="act-time">~5:00–5:30 PM CT</div>
+        <div class="act-name">🏠 Arrive Home — Vestavia Hills!</div>
+        <div class="act-desc">Welcome home, Hicks family! You did it — an epic Colorado road trip in the books. Unpack, decompress, and relive the memories. 🎉</div>
+      </div>
+    </div>
+
+    <!-- Directions -->
+    <div style="margin-top:18px">
+      <div class="dir-card" id="dir-okc-home">
+        <div class="dir-head" onclick="toggleDir('dir-okc-home')">
+          <div class="dir-label">🗺️ Driving Directions: Oklahoma City → Vestavia Hills</div>
+          <div class="dir-arrow">▼</div>
+        </div>
+        <div class="dir-body">
+          I-40 E through Little Rock, AR (~5 hrs)<br>
+          I-40 E to Memphis, TN (~2 hrs more)<br>
+          I-22 E / US-78 E to Birmingham / Vestavia Hills (~3.5 hrs)<br>
+          <strong>Total: ~10 hours / ~700 miles</strong><br>
+          <em>⛽ Gas stops near Fort Smith, Little Rock, and Memphis</em>
+          <br><a href="https://www.google.com/maps/dir/Hilton+Garden+Inn+Oklahoma+City+Bricktown,+East+Sheridan+Avenue,+Oklahoma+City,+OK/Vestavia+Hills,+AL" target="_blank">Open in Google Maps</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== IMPORTANT NOTES ===== -->
+<div class="section-div"><span class="section-title">Important Notes</span></div>
+
+<div class="log-grid">
+  <div class="log-card">
+    <div class="log-icon">🚡</div>
+    <div class="log-label">Aerial Tram</div>
+    <div class="log-val">Closed for Season</div>
+    <div class="log-extra">Reopens May 2026</div>
+  </div>
+  <div class="log-card">
+    <div class="log-icon">🔭</div>
+    <div class="log-label">Observatory</div>
+    <div class="log-val">Open House: Mar 29</div>
+    <div class="log-extra">You depart Mar 28 — just missed it</div>
+  </div>
+  <div class="log-card">
+    <div class="log-icon">🧥</div>
+    <div class="log-label">Weather</div>
+    <div class="log-val">0–58°F at Estes Park</div>
+    <div class="log-extra">Dress in layers! Waterproof boots for FDGD</div>
+  </div>
+  <div class="log-card">
+    <div class="log-icon">⛰️</div>
+    <div class="log-label">Elevation</div>
+    <div class="log-val">7,522 ft</div>
+    <div class="log-extra">Drink water! Altitude affects everyone</div>
+  </div>
+  <div class="log-card">
+    <div class="log-icon">🚗</div>
+    <div class="log-label">Traction Law</div>
+    <div class="log-val">CO requires AWD/chains</div>
+    <div class="log-extra">Check conditions on I-70 mountain passes</div>
+  </div>
+  <div class="log-card">
+    <div class="log-icon">💳</div>
+    <div class="log-label">Stanley Deposit</div>
+    <div class="log-val">$100/night hold</div>
+    <div class="log-extra">Released 5–7 days post-checkout</div>
+  </div>
+</div>
+
+</div><!-- end .wrap -->
+
+<!-- ===== PLAN PANEL ===== -->
+<button class="plan-btn" onclick="openPlan()">📋<span class="plan-count" id="planCount">0</span></button>
+<div class="plan-panel" id="planPanel">
+  <button class="plan-panel-close" onclick="closePlan()">✕</button>
+  <h3>Your Plan</h3>
+  <div id="planList"><div class="plan-empty">Tap activities & meals to add them to your plan!</div></div>
+</div>
+
+<script>
+// Day toggle
+function toggleDay(id){document.getElementById(id).classList.toggle('open')}
+
+// Direction toggle
+function toggleDir(id){document.getElementById(id).classList.toggle('open')}
+
+// Plan state
+let plan=[];
+
+function updatePlan(){
+  const c=document.getElementById('planCount');
+  const l=document.getElementById('planList');
+  c.textContent=plan.length;
+  if(!plan.length){l.innerHTML='<div class="plan-empty">Tap activities & meals to add them to your plan!</div>';return}
+  let html='';
+  plan.sort((a,b)=>a.day.localeCompare(b.day));
+  let lastDay='';
+  plan.forEach(p=>{
+    if(p.day!==lastDay){html+=`<div class="plan-item-day">${p.day}</div>`;lastDay=p.day}
+    html+=`<div class="plan-item">${p.name}</div>`;
+  });
+  l.innerHTML=html;
+}
+
+function toggleAct(el){
+  if(el.classList.contains('confirmed'))return;
+  el.classList.toggle('selected');
+  const day=el.dataset?.day||el.getAttribute('data-day')||'';
+  const name=el.dataset?.name||el.getAttribute('data-name')||'';
+  if(!day||!name)return;
+  if(el.classList.contains('selected')){
+    el.querySelector('.act-cb').textContent='✓';
+    plan.push({day,name});
+  }else{
+    el.querySelector('.act-cb').textContent='';
+    plan=plan.filter(p=>!(p.day===day&&p.name===name));
+  }
+  updatePlan();
+}
+
+function toggleMeal(el){
+  el.classList.toggle('selected');
+  const day=el.dataset?.day||el.getAttribute('data-day')||'';
+  const name=el.dataset?.name||el.getAttribute('data-name')||'';
+  if(!day||!name)return;
+  if(el.classList.contains('selected')){
+    plan.push({day,name});
+  }else{
+    plan=plan.filter(p=>!(p.day===day&&p.name===name));
+  }
+  updatePlan();
+}
+
+function openPlan(){document.getElementById('planPanel').classList.add('open')}
+function closePlan(){document.getElementById('planPanel').classList.remove('open')}
+
+// Close panel on outside click
+document.addEventListener('click',e=>{
+  const p=document.getElementById('planPanel');
+  const b=document.querySelector('.plan-btn');
+  if(p.classList.contains('open')&&!p.contains(e.target)&&!b.contains(e.target))closePlan();
+});
+
+// Paint drips from specific letters
+function createLetterDrips(){
+  const title=document.getElementById('mainTitle');
+  if(!title)return;
+  // Remove old drips
+  title.querySelectorAll('.drip-anchor').forEach(el=>el.remove());
+
+  const titleRect=title.getBoundingClientRect();
+  const letters=title.querySelectorAll('[data-drip]');
+  // Varying drip lengths and speeds for each letter
+  const configs=[
+    {len:65,speed:4.0,delay:0.5},  // C
+    {len:50,speed:3.5,delay:2.0},   // l
+    {len:45,speed:3.2,delay:1.8},   // r (colorado)
+    {len:80,speed:5.0,delay:1.0},   // d
+    {len:35,speed:2.8,delay:2.5},   // S
+    {len:55,speed:3.8,delay:0.8},   // r (spring)
+    {len:70,speed:4.5,delay:1.5},   // g
+    {len:50,speed:3.5,delay:0.3},   // B
+    {len:40,speed:3.0,delay:2.2},   // e
+    {len:60,speed:4.2,delay:1.2,xPct:0.2},   // k (left vertical bar)
+  ];
+
+  letters.forEach((span,i)=>{
+    const r=span.getBoundingClientRect();
+    const cfg=configs[i]||{len:50,speed:3.5,delay:1};
+    const anchor=document.createElement('div');
+    anchor.className='drip-anchor';
+    // Position at center-bottom of the letter (or custom xPct), relative to the title element
+    const xPct = cfg.xPct !== undefined ? cfg.xPct : 0.5;
+    anchor.style.left=(r.left - titleRect.left + r.width * xPct)+'px';
+    anchor.style.top=(r.bottom - titleRect.top - 20)+'px';
+
+    const stream=document.createElement('div');
+    stream.className='drip-stream';
+    stream.style.transition='none';
+    anchor.appendChild(stream);
+    title.appendChild(anchor);
+
+    // Animate after delay
+    setTimeout(()=>{
+      stream.style.transition='height '+cfg.speed+'s ease-in, opacity 1s ease-in';
+      stream.style.height=cfg.len+'px';
+      stream.style.opacity='0.85';
+    }, cfg.delay*1000);
+  });
+}
+
+window.addEventListener('load',()=>{setTimeout(createLetterDrips,800)});
+window.addEventListener('resize',()=>{createLetterDrips()});
+</script>
+</body>
+</html>
